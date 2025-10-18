@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from audio_extract import extract_audio, utils
 from math import floor
 from mutagen import MutagenError
@@ -5,7 +7,7 @@ from sys import argv
 from csv import reader
 
 if len(argv) != 3:
-    print("\nMedia2Tracks v1.0\nExtract separate tracks from a media file, based on a given tracklist file.\n\nUsage: media2tracks.py <media file> <tracklist file>\n\n<media file>:\tAudio (WAV, OGG, MP3, AAC, FLAC, M4A, OGA, OPUS)\n\t\tVideo (MP4, MKV, WEBM, FLV, AVI, MOV, WMV, M4V)\n<tracklist file>: CSV or TXT with '<title>,<start>(HH:MM:SS)'\n\nPlease make sure to use matching media and tracklist files.")
+    print("\nMedia2Tracks v1.0\nExtract separate audio tracks from a media file as individual MP3 files, based on a given tracklist file.\n\nUsage: media2tracks.py <media file> <tracklist file>\n\n<media file>:\tAudio (WAV, OGG, MP3, AAC, FLAC, M4A, OGA, OPUS)\n\t\tVideo (MP4, MKV, WEBM, FLV, AVI, MOV, WMV, M4V)\n<tracklist file>: CSV or TXT with '<title>,<start>(HH:MM:SS)'\n\nPlease make sure to use matching media and tracklist files.")
 else:
     audio_file = str(argv[1])
     trackinfo_file = str(argv[2])
@@ -47,5 +49,7 @@ else:
         print(f"{type(err)} with file {err}.")
     except KeyError as err:
         print(f"{type(err)} with key {err}. Looks like your tracklist file is missing information.")
+    except IndexError as err:
+        print(f"{type(err)}{err}: Looks like your tracklist file either has empty lines (you need to delete them), or the wrong format.")
     except Exception as err:
         print(f"Unexpected {err=}, {type(err)=}")
